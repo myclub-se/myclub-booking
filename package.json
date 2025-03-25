@@ -1,0 +1,25 @@
+{
+	"name": "myclub-booking",
+	"version": "1.3.1",
+	"description": "Blocks for displaying MyClub booking content on a WordPress site.",
+	"author": "MyClub AB",
+	"license": "GPL-2.0",
+	"main": "build/index.js",
+	"scripts": {
+		"start": "wp-scripts start --webpack-src-dir=blocks/src/ --output-path=blocks/build/",
+		"build": "wp-scripts build --webpack-src-dir=blocks/src/ --output-path=blocks/build/",
+		"format": "wp-scripts format --webpack-src-dir=blocks/src/ --output-path=blocks/build/",
+		"lint:css": "wp-scripts lint-style --webpack-src-dir=blocks/src/ --output-path=blocks/build/",
+		"lint:js": "wp-scripts lint-js --webpack-src-dir=blocks/src/ --output-path=blocks/build/",
+		"packages-update": "wp-scripts packages-update --webpack-src-dir=blocks/src/ --output-path=blocks/build/",
+		"plugin-zip": "wp-scripts plugin-zip --webpack-src-dir=blocks/src/ --output-path=blocks/build/"
+	},
+	"devDependencies": {
+		"@wordpress/blocks": "^14.9.0",
+		"@wordpress/i18n": "^5.20.0",
+		"@wordpress/scripts": "^30.13.0"
+	},
+	"dependencies": {
+		"@wordpress/server-side-render": "^5.16.0"
+	}
+}

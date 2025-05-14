@@ -20,6 +20,11 @@
 		"@wordpress/scripts": "^30.13.0"
 	},
 	"dependencies": {
+		"@fullcalendar/core": "5.11.5",
+		"@fullcalendar/daygrid": "5.11.5",
+		"@fullcalendar/list": "5.11.5",
+		"@fullcalendar/react": "5.11.5",
+		"@fullcalendar/timegrid": "5.11.5",
 		"@wordpress/server-side-render": "^5.16.0"
 	}
 }

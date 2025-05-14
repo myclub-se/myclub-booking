@@ -1,0 +1,6 @@
+@use '../shared/modal';
+.wp-block-myclub-booking-calendar {
+	a.fc-event {
+		text-decoration: none !important;
+	}
+}

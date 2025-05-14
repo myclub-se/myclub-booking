@@ -31,13 +31,13 @@ def update_file_names(files):
                     source = 'news'
                 elif data['source'] == 'blocks/src/title/edit.js':
                     source = 'title'
-                elif data['source'] == 'resources/javascript/myclub_groups_settings.js':
-                    new_name = f"myclub-groups-sv_SE-myclub_groups_settings_js.json"
+                elif data['source'] == 'resources/javascript/myclub_booking_settings.js':
+                    new_name = f"myclub-booking-sv_SE-myclub_booking_settings_js.json"
                     os.rename(os.path.join(DIR_NAME, f), os.path.join(DIR_NAME, new_name))
                     continue
 
                 if source:
-                    new_name = f"myclub-groups-sv_SE-myclub-groups-{source}-editor-script.json"
+                    new_name = f"myclub-booking-sv_SE-myclub-booking-{source}-editor-script.json"
                     os.rename(os.path.join(DIR_NAME, f), os.path.join(DIR_NAME, new_name))
 
 if __name__ == "__main__":

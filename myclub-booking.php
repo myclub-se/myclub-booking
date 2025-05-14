@@ -15,6 +15,8 @@ Domain Path: /languages
 License: GPLv2 or later
 */
 
+use MyClub\MyClubBooking\Services;
+
 defined( 'ABSPATH' ) or die( 'Access denied' );
 
 if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
@@ -27,23 +29,37 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . '/lib/autoload.php' ) ) {
 
 define( 'MYCLUB_BOOKING_PLUGIN_VERSION', '0.0.1' );
 
-function myclub_booking_activate()
-{
+if ( file_exists( plugin_dir_path( __FILE__ ) . '/src/Activation.php' ) ) {
+    function myclub_booking_activate()
+    {
+        $activation = new Activation();
+        $activation->activate();
+    }
+
+    // Register activation code
+    register_activation_hook( __FILE__, 'myclub_booking_activate' );
+
+    function myclub_booking_deactivate()
+    {
+        $activation = new Activation();
+        $activation->deactivate();
+    }
+
+    // Register deactivation code
+    register_deactivation_hook( __FILE__, 'myclub_booking_deactivate' );
+
+    function myclub_booking_uninstall()
+    {
+        $activation = new Activation();
+        $activation->uninstall();
+    }
+
+    // Register uninstall code
+    register_uninstall_hook( __FILE__, 'myclub_booking_uninstall' );
 }
 
-// Register activation code
-register_activation_hook( __FILE__, 'myclub_booking_activate' );
 
-function myclub_booking_deactivate()
-{
+if ( file_exists( plugin_dir_path( __FILE__) . '/src/Services.php' ) ) {
+    // Register all plugin functionality
+    Services::register_services();
 }
-
-// Register deactivation code
-register_deactivation_hook( __FILE__, 'myclub_booking_deactivate' );
-
-function myclub_booking_uninstall()
-{
-}
-
-// Register uninstall code
-register_uninstall_hook( __FILE__, 'myclub_booking_uninstall' );

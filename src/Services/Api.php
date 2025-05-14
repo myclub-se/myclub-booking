@@ -50,9 +50,7 @@ class Api
                 $this,
                 'return_bookable_slots'
             ],
-            'permission_callback' => function () {
-                return current_user_can('edit_posts');
-            },
+            'permission_callback' => '__return_true',
             'args' => array(
                 'id' => array(
                     'validate_callback' => function ($param, $request, $key) {
@@ -74,9 +72,11 @@ class Api
     public function return_bookable_slots(WP_REST_Request $request): WP_REST_Response
     {
         $bookable_id = $request['id'];
+        $start_date = $request['start_date'];
+        $end_date = $request['end_date'];
 
         $rest_api = new RestApi();
-        $myclub_bookable_slots = $rest_api->load_bookable_slots($bookable_id)->result;
+        $myclub_bookable_slots = $rest_api->load_bookable_slots($bookable_id, $start_date, $end_date)->result;
 
         return new WP_REST_Response($myclub_bookable_slots, 200);
     }

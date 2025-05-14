@@ -1,5 +1,7 @@
 import svLocale from './sv';
 import enLocale from '@fullcalendar/core/locales/en-gb';
+import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
 
 export const getCalendarLocale = (locale) => {
     return locale === 'sv_SE' ? svLocale : enLocale;
@@ -21,7 +23,7 @@ const subtractMinutes = (time, minutes) => {
     return `${hrs}:${mins}:${secs}`;
 }
 
-export const getFullCalendarOptions = ({ labels, events, locale, firstDay, smallScreen, plugins, showEvent }) => {
+export const getFullCalendarOptions = ({labels, events, locale, firstDay, smallScreen, plugins, showEvent}) => {
     const rightToolbar = smallScreen ? 'timeGridDay,listMonth' : 'dayGridMonth,timeGridWeek,listMonth';
     const initialView = smallScreen ? 'listMonth' : 'dayGridMonth';
 
@@ -48,8 +50,8 @@ export const getFullCalendarOptions = ({ labels, events, locale, firstDay, small
             let timeText = arg.timeText;
             element.classList.add('fc-event-title');
 
-            if ( item.extendedProps.meetUpTime && item.extendedProps.meetUpTime !== item.extendedProps.startTime ) {
-                if ( !timeText ) {
+            if (item.extendedProps.meetUpTime && item.extendedProps.meetUpTime !== item.extendedProps.startTime) {
+                if (!timeText) {
                     timeText = item.extendedProps.startTime.substring(0, 5);
                 }
 
@@ -65,7 +67,7 @@ export const getFullCalendarOptions = ({ labels, events, locale, firstDay, small
                 element
             ];
 
-            return { domNodes: arrayOfDomNodes };
+            return {domNodes: arrayOfDomNodes};
         },
     };
 };
@@ -95,7 +97,7 @@ export const setupEvents = (slots) => {
 }
 
 export const showDialog = (item, modal, labels) => {
-    const { type, startTime, endTime, location } = item.extendedProps;
+    const {type, startTime, endTime, location} = item.extendedProps;
     const content = modal?.querySelector('.modal-body');
     const close = modal?.querySelector('.close');
 
@@ -115,4 +117,19 @@ export const showDialog = (item, modal, labels) => {
     };
     close?.addEventListener('click', closeModal);
     modal.addEventListener('click', closeModal);
+}
+
+export const loadEvents = (bookableId) => {
+    return (fetchInfo, successCallback, _) => {
+        if (!bookableId) {
+            return;
+        }
+        const queryParams = {
+            start_date: fetchInfo.start.toISOString().slice(0, 10), end_date: fetchInfo.end.toISOString().slice(0, 10)
+        };
+        apiFetch({path: addQueryArgs(`/myclub/v1/bookables/${bookableId}/slots`, queryParams)}).then((slots) => {
+            const allSlots = slots.results;
+            successCallback(setupEvents(allSlots));
+        });
+    }
 }

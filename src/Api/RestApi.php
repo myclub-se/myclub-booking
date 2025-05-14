@@ -89,7 +89,7 @@ class RestApi
      *                        decoded JSON or WordPress error. Otherwise, it returns the decoded news items.
      * @since 1.0.0
      */
-    public function load_bookable_slots( string $bookableId = null )
+    public function load_bookable_slots( string $bookableId = null, string $start_date = null, string $end_date = null )
     {
         if ( empty( $this->apiKey ) ) {
             return false;
@@ -98,10 +98,19 @@ class RestApi
         if ( is_null( $bookableId ) ) {
             return false;
         }
+        $args = array (
+            "limit" => "null"
+        );
+        if ( !is_null( $start_date ) ) {
+            $args["start_date"] = $start_date;
+        }
+        if ( !is_null( $end_date ) ) {
+            $args["end_date"] = $end_date;
+        }
 
         $service_path = sprintf("bookables/%s/slots/", $bookableId);
 
-        $decoded = $this->get( $service_path, [ "limit" => "null" ] );
+        $decoded = $this->get( $service_path, $args );
         if ( is_wp_error( $decoded ) || $decoded->status !== 200 ) {
             error_log( 'Unable to load news: Error occurred in API call' );
         }

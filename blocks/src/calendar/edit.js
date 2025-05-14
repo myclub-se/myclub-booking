@@ -6,7 +6,7 @@ import {__} from "@wordpress/i18n";
 
 import {getMyClubBookables} from "../shared/edit-functions";
 import FullCalendar from "@fullcalendar/react";
-import {getCalendarLocale, getFullCalendarOptions, setupEvents, showDialog} from "../shared/calendar-functions";
+import {getCalendarLocale, getFullCalendarOptions, setupEvents, showDialog, loadEvents} from "../shared/calendar-functions";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
@@ -22,7 +22,6 @@ const labels = {
 
 export default function Edit( { attributes, setAttributes } ) {
 	const [calendarTitle, setCalendarTitle] = useState('');
-	const [postEvents, setPostEvents] = useState({events: [], loaded: false});
 	const [posts, setPosts] = useState([]);
 	const {apiFetch} = wp;
 	const {useSelect} = wp.data;
@@ -60,38 +59,16 @@ export default function Edit( { attributes, setAttributes } ) {
 			showDialog(item, modal, labels);
 		}
 	};
-	const resetPostEvents = (loaded = false) => {
-		setPostEvents({
-			events: [],
-			loaded,
-		});
-	};
 
 	const options = useMemo(() => getFullCalendarOptions({
 		labels,
-		events: postEvents.events || [], // Provide events
+		events: loadEvents(attributes.bookable_id), // Provide events
 		startOfWeek,
 		locale: getCalendarLocale(currentLocale),
 		smallScreen: window.innerWidth < 960,
 		plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
 		showEvent: (arg) => handleShowEvent(arg)
-	}), [postEvents.events, startOfWeek, currentLocale]);
-
-	const fetchEvents = async (bookable_id) => {
-		try {
-			const slots = await apiFetch({ path: `/myclub/v1/bookables/${bookable_id}/slots` });
-			const allSlots = slots.results;
-			const events = setupEvents(allSlots);
-
-			setPostEvents({
-				events,
-				loaded: true, // Mark as successfully loaded
-			});
-		} catch (error) {
-			// Handle errors and reset state
-			throw new Error(error.message);
-		}
-	};
+	}), [startOfWeek, currentLocale]);
 
 	useEffect(() => {
 		apiFetch( { path: '/myclub/v1/options' } ).then(options => {
@@ -100,38 +77,6 @@ export default function Edit( { attributes, setAttributes } ) {
 
 		getMyClubBookables( setPosts, selectPostLabel );
 	}, []);
-
-	useEffect(() => {
-		// Ensure the calendar reference exists before attempting to update events
-		if (calendarRef && calendarRef.current) {
-			const api = calendarRef.current.getApi();
-
-			// Only update the calendar if there are new events and they are loaded
-			if (postEvents.loaded) {
-				api.removeAllEvents(); // Clear previous events
-				api.addEventSource(postEvents.events); // Add the new event source
-			}
-		}
-	}, [postEvents]);
-
-	useEffect(() => {
-		// Reset the postEvents state whenever the post_id changes
-		resetPostEvents();
-
-		// Fetch events if a valid post_id is provided
-		if (attributes.bookable_id) {
-			fetchEvents(attributes.bookable_id).catch(error => {
-				console.error('Error fetching events:', error); // Log fetch errors
-				setPostEvents({
-					events: [],
-					loaded: true, // Mark as loaded to avoid infinite effect calls
-				});
-			});
-		} else {
-			resetPostEvents(true);
-		}
-		// Depend on post_id so it executes correctly when attributes.post_id changes
-	}, [attributes.post_id]);
 
 	return (
 		<>

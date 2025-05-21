@@ -45,15 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     <?php } ?>
     <?php if ( in_array( $active_tab, $valid_action_tabs ) ) { ?>
         <div>
-            <?php if( $active_tab === 'tab1' ) { ?>
-                <button type="button" id="myclub-reload-bookables-button" class="button">
-                    <?php esc_attr_e( 'Reload bookable items', 'myclub-booking' ) ?>
-                </button>
-                <button type="button" id="myclub-sync-slots-button" class="button">
-                    <?php esc_attr_e( 'Resync slots', 'myclub-booking' ) ?>
-                </button>
-            <?php }
-            submit_button( esc_html__( 'Save Changes' ), 'primary', 'save', false ); ?>
+            <?php submit_button( esc_html__( 'Save Changes' ), 'primary', 'save', false ); ?>
         </div>
     <?php } ?>
     </form>

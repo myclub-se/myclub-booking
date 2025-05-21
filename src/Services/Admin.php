@@ -68,29 +68,13 @@ class Admin extends Base
             ],
             'default'           => NULL
         ] );
-        register_setting( 'myclub_booking_settings_tab1', 'myclub_booking_last_bookable_sync', [
-            'default' => NULL
-        ] );
-        register_setting( 'myclub_booking_settings_tab1', 'myclub_booking_last_slots_sync', [
-            'default' => NULL
-        ] );
 
         add_settings_section( 'myclub_booking_main', __( 'MyClub Booking Main Settings', 'myclub-booking' ), function () {
-        }, 'myclub_booking_settings_tab1' );
-        add_settings_section( 'myclub_booking_sync', __( 'Synchronization information', 'myclub-booking' ), function () {
         }, 'myclub_booking_settings_tab1' );
         add_settings_field( 'myclub_booking_api_key', __( 'MyClub API Key', 'myclub-booking' ), [
             $this,
             'render_api_key'
         ], 'myclub_booking_settings_tab1', 'myclub_booking_main', [ 'label_for' => 'myclub_booking_api_key' ] );
-        add_settings_field( 'myclub_booking_last_bookable_sync', __( 'Bookables last synchronized', 'myclub-booking' ), [
-            $this,
-            'render_bookable_last_sync'
-        ], 'myclub_booking_settings_tab1', 'myclub_booking_sync' );
-        add_settings_field( 'myclub_booking_last_slots_sync', __( 'Slots last synchronized', 'myclub-booking' ), [
-            $this,
-            'render_slots_last_sync'
-        ], 'myclub_booking_settings_tab1', 'myclub_booking_sync' );
     }
 
     public function add_plugin_settings_link( array $links ): array
@@ -125,67 +109,16 @@ class Admin extends Base
         echo '<input type="text" id="' . esc_attr( $args[ 'label_for' ] ) . '" name="myclub_booking_api_key" value="' . esc_attr( get_option( 'myclub_booking_api_key' ) ) . '" />';
     }
 
-    public function render_slots_last_sync()
-    {
-        $this->render_date_time_field( 'myclub_booking_last_slots_sync' );
-    }
-
-    public function render_bookable_last_sync()
-    {
-        $this->render_date_time_field( 'myclub_booking_last_bookable_sync' );
-    }
-
     public function sanitize_api_key( string $input ): string
     {
-        $input = sanitize_text_field( $input );
+        $input = sanitize_text_field($input);
 
-        $api = new RestApi( $input );
-        if ( $api->load_bookables()->status !== 200 ) {
-            add_settings_error( 'myclub_booking_api_key', 'invalid-api-key', __( 'Invalid API key entered', 'myclub-booking' ) );
-            return get_option( 'myclub_booking_api_key' );
+        $api = new RestApi($input);
+        if ($api->load_bookables()->status !== 200) {
+            add_settings_error('myclub_booking_api_key', 'invalid-api-key', __('Invalid API key entered', 'myclub-booking'));
+            return get_option('myclub_booking_api_key');
         } else {
             return $input;
         }
-    }
-
-    public function wp_cron_admin_notice()
-    {
-        if ( !wp_next_scheduled( 'wp_version_check' ) ) {
-            ?>
-            <div class="notice notice-warning is-dismissible">
-                <p><?php esc_html_e( 'WP Cron is not running. This is required for running the MyClub booking plugin.', 'myclub-booking' ); ?></p>
-            </div>
-            <?php
-        }
-    }
-
-    private function render_date_time_field( string $field_name )
-    {
-        $last_sync = esc_attr( get_option( $field_name ) );
-        $cron_job_name = '';
-        $output = '';
-
-        if ( $field_name === 'myclub_booking_last_slots_sync' ) {
-            $cron_job_name = 'myclub_booking_refresh_slots_task_cron';
-            $cron_job_type = __( 'slots', 'myclub-booking' );
-        }
-
-        if ( $field_name === 'myclub_booking_last_bookable_sync' ) {
-            $cron_job_name = 'myclub_booking_refresh_bookables_task_cron';
-            $cron_job_type = __( 'bookables', 'myclub-booking' );
-        }
-
-        if ( !empty( $cron_job_name ) && isset( $cron_job_type ) ) {
-            $next_scheduled = wp_next_scheduled( $cron_job_name );
-            if ( $next_scheduled ) {
-                $output = sprintf( __( 'The %1$s update task is currently running.', 'myclub-booking' ), esc_attr( $cron_job_type ) );
-            }
-        }
-
-        if ( empty ( $output ) ) {
-            $output = empty( $last_sync ) ? __( 'Not synchronized yet', 'myclub-nooking' ) : Utils::format_date_time( $last_sync );
-        }
-
-        echo '<div id="' . $field_name . '">' . esc_attr( $output ) . '</div>';
     }
 }

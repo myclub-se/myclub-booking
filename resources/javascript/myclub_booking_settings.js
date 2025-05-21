@@ -47,44 +47,6 @@ jQuery(document).ready(function($) {
         }
     }
 
-    $("#myclub-reload-bookables-button").on("click", function() {
-        addNotice(wp.i18n.__('Reloading bookable items', 'myclub-booking'), 'success');
-        $("#myclub_booking_last_bookable_sync").html(wp.i18n.__('The bookable items update task is currently running', 'myclub-booking'));
-
-        $.ajax({
-            url: ajaxurl,
-            data: {
-                "action": "myclub_reload_bookables"
-            },
-            success: function(returned_data) {
-                addNotice(returned_data.data.message, returned_data.success ? 'success' : 'error');
-            },
-            error: function(errorThrown) {
-                addNotice(wp.i18n.__('Unable to reload bookables', 'myclub-booking'), 'error');
-                console.log(errorThrown);
-            }
-        });
-    });
-
-    $("#myclub-sync-slots-button").on("click", function() {
-        addNotice(wp.i18n.__('Synchronizing slots', 'myclub-booking'), 'success');
-        $("#myclub_booking_last_slots_sync").html(wp.i18n.__('Slot synchronization is currently running', 'myclub-booking'));
-
-        $.ajax({
-            url: ajaxurl,
-            data: {
-                "action": "myclub_sync_slots"
-            },
-            success: function(returned_data) {
-                addNotice(returned_data.data.message, returned_data.success ? 'success' : 'error');
-            },
-            error: function(errorThrown) {
-                addNotice(wp.i18n.__('Unable to synchronize slots', 'myclub-booking'), 'error');
-                console.log(errorThrown);
-            }
-        })
-    });
-
     $("#myclub-settings-form").on("click", ".myclub-dismiss", function() {
         $(this).parent().hide();
     });

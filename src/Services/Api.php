@@ -20,7 +20,7 @@ class Api
         ]);
     }
 
-   public function register_routes()
+    public function register_routes()
     {
         register_rest_route('myclub/v1', '/options', [
             'methods' => 'GET',
@@ -59,6 +59,48 @@ class Api
                 ),
             )
         ]);
+
+        register_rest_route('myclub/v1', '/bookables/(?P<id>\w+)/slots/(?P<slot_id>\w+)', [
+            'methods' => 'GET',
+            'callback' => [
+                $this,
+                'return_bookable_slot'
+            ],
+            'permission_callback' => '__return_true',
+            'args' => array(
+                'id' => array(
+                    'validate_callback' => function ($param, $request, $key) {
+                        return is_string($param);
+                    }
+                ),
+                'slot_id' => array(
+                    'validate_callback' => function ($param, $request, $key) {
+                        return is_string($param);
+                    }
+                ),
+            )
+        ]);
+
+        register_rest_route('myclub/v1', '/bookables/(?P<id>\w+)/slots/(?P<slot_id>\w+)/book', [
+            'methods' => 'POST',
+            'callback' => [
+                $this,
+                'book_slot'
+            ],
+            'permission_callback' => '__return_true',
+            'args' => array(
+                'id' => array(
+                    'validate_callback' => function ($param, $request, $key) {
+                        return is_string($param);
+                    }
+                ),
+                'slot_id' => array(
+                    'validate_callback' => function ($param, $request, $key) {
+                        return is_string($param);
+                    }
+                ),
+            )
+        ]);
     }
 
     public function return_bookables(): WP_REST_Response
@@ -79,6 +121,39 @@ class Api
         $myclub_bookable_slots = $rest_api->load_bookable_slots($bookable_id, $start_date, $end_date)->result;
 
         return new WP_REST_Response($myclub_bookable_slots, 200);
+    }
+
+    public function return_bookable_slot(WP_REST_Request $request): WP_REST_Response
+    {
+        $bookable_id = $request['id'];
+        $slot_id = $request['slot_id'];
+
+        $rest_api = new RestApi();
+        $myclub_bookable_slots = $rest_api->load_bookable_slot($bookable_id, $slot_id)->result;
+
+        return new WP_REST_Response($myclub_bookable_slots, 200);
+    }
+
+    public function book_slot(WP_REST_Request $request): WP_REST_Response
+    {
+        $bookable_id = $request['id'];
+        $slot_id = $request['slot_id'];
+        $email = $request['email'];
+        $first_name = $request['first_name'];
+        $last_name = $request['last_name'];
+        $start_time = $request['start_time'];
+        $end_time = $request['end_time'];
+        if (empty($first_name) || $first_name === 'null' || $first_name === 'undefined') {
+            $first_name = null;
+        }
+        if (empty($last_name) || $last_name === 'null' || $last_name === 'undefined') {
+            $last_name = null;
+        }
+
+        $rest_api = new RestApi();
+        $myclub_booked_session = $rest_api->book_slot($bookable_id, $slot_id, $start_time, $end_time, $email, $first_name, $last_name)->result;
+
+        return new WP_REST_Response($myclub_booked_session, 200);
     }
 
     public function return_options(): WP_REST_Response

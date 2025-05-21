@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById("calendar-modal");
 
             if (modal) {
-                showDialog(item, modal, labels);
+                showDialog(item, modal, calendar);
             }
         }
     }));

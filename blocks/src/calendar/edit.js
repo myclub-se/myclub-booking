@@ -6,7 +6,7 @@ import {__} from "@wordpress/i18n";
 
 import {getMyClubBookables} from "../shared/edit-functions";
 import FullCalendar from "@fullcalendar/react";
-import {getCalendarLocale, getFullCalendarOptions, setupEvents, showDialog, loadEvents} from "../shared/calendar-functions";
+import {getCalendarLocale, getFullCalendarOptions, showDialog, loadEvents} from "../shared/calendar-functions";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
@@ -56,7 +56,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		const modal = modalRef?.current;
 
 		if (modal) {
-			showDialog(item, modal, labels);
+			showDialog(item, modal, calendarRef.current.getApi());
 		}
 	};
 
@@ -84,7 +84,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				<PanelBody title={ __( 'Content settings', 'myclub-booking' ) }>
 					<PanelRow>
 						<SelectControl
-							label={ __('Bookable item id', 'myclub-booking') }
+							label={ __('Bookable item', 'myclub-booking') }
 							value={ attributes.bookable_id }
 							options={ posts }
 							onChange={ ( value ) => {
@@ -98,7 +98,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				<div className="myclub-booking-calendar" ref={ outerRef }>
 					<div class="myclub-booking-calendar-container">
 						<h3 class="myclub-booking-header">{ calendarTitle }</h3>
-						<FullCalendar ref={ calendarRef } { ...options } />
+						<FullCalendar id='calendar-div' ref={ calendarRef } { ...options } />
 					</div>
 					<div className="calendar-modal" ref={ modalRef }>
 						<div className="modal-content">

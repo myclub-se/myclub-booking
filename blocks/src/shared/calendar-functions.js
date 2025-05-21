@@ -125,9 +125,14 @@ export const submitBooking = (startTime, endTime, bookableId, slotId) => {
                         end_time: endTime
                     },
                 }).then((res) => {
-                    console.log(form, res);
                     form.querySelector('.myclub-button').disabled = true;
                     form.querySelector('.myclub-button').innerHTML = __('Booking successful', 'myclub-booking');
+                    if (res.payment_order_id) {
+                        const paymentLinkDiv = document.createElement("div");
+                        const paymentLink = `https://app.myclub.se/payments/payment-orders/${res.member_id}/${res.payment_order_id}`;
+                        paymentLinkDiv.innerHTML = __('You payment link: ', 'myclub-booking') + `<a href=${paymentLink}>${paymentLink}</a>`;
+                        form.querySelector('#myclub-payment-link').appendChild(paymentLinkDiv)
+                    }
                 });
             }
         });
@@ -151,6 +156,7 @@ export const showDialog = (item, modal, calendarRef) => {
     output += `<div class="myclub-input-wrapper"><label>${__("First name", 'myclub-booking')}</label><input class="myclub-input" name="first_name" type="text" required></input></div>`;
     output += `<div class="myclub-input-wrapper"><label>${__("Last name", 'myclub-booking')}</label><input class="myclub-input" name="last_name" type="text" required></input></div>`;
     output += `<div class="myclub-button-wrapper"><button type="submit" class="myclub-button">${__("Book session", 'myclub-booking')}</div>`;
+    output += `<div id="myclub-payment-link"></div>`;
     output += '</form>';
 
     content.innerHTML = output;

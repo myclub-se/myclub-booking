@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-21T10:22:44+00:00\n"
+"POT-Creation-Date: 2025-05-21T11:37:14+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: myclub-booking\n"
@@ -91,45 +91,16 @@ msgstr ""
 msgid "MyClub Booking plugin settings"
 msgstr ""
 
-#: src/Services/Admin.php:78
+#: src/Services/Admin.php:72
 msgid "MyClub Booking Main Settings"
 msgstr ""
 
-#: src/Services/Admin.php:80
-msgid "Synchronization information"
-msgstr ""
-
-#: src/Services/Admin.php:82
+#: src/Services/Admin.php:74
 msgid "MyClub API Key"
 msgstr ""
 
-#: src/Services/Admin.php:86
-msgid "Bookables last synchronized"
-msgstr ""
-
-#: src/Services/Admin.php:90
-msgid "Slots last synchronized"
-msgstr ""
-
-#: src/Services/Admin.php:144
+#: src/Services/Admin.php:118
 msgid "Invalid API key entered"
-msgstr ""
-
-#: src/Services/Admin.php:156
-msgid "WP Cron is not running. This is required for running the MyClub booking plugin."
-msgstr ""
-
-#: src/Services/Admin.php:170
-msgid "slots"
-msgstr ""
-
-#: src/Services/Admin.php:175
-msgid "bookables"
-msgstr ""
-
-#: src/Services/Admin.php:181
-#, php-format
-msgid "The %1$s update task is currently running."
 msgstr ""
 
 #: src/Services/Blocks.php:56
@@ -182,14 +153,6 @@ msgstr ""
 msgid "The calendar shortcode will display a booking calendar. The available attributes are <code>post_id</code> which can be set to the WordPress post id of the group page that you want to get the calendar from or <code>group_id</code> which is the MyClub group id for the group page. The default is to use the current page."
 msgstr ""
 
-#: templates/admin/admin_settings.php:50
-msgid "Reload bookable items"
-msgstr ""
-
-#: templates/admin/admin_settings.php:53
-msgid "Resync slots"
-msgstr ""
-
 #: blocks/build/calendar/index.js:1
 #: blocks/src/calendar/edit.js:16
 msgid "Name"
@@ -211,6 +174,55 @@ msgid "Select a bookable item"
 msgstr ""
 
 #: blocks/build/calendar/index.js:1
+#: blocks/build/calendar/view.js:1
+#: blocks/src/shared/calendar-functions.js:151
+msgid "Book "
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
+#: blocks/build/calendar/view.js:1
+#: blocks/src/shared/calendar-functions.js:155
+msgid "Email address"
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
+#: blocks/build/calendar/view.js:1
+#: blocks/src/shared/calendar-functions.js:156
+msgid "First name"
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
+#: blocks/build/calendar/view.js:1
+#: blocks/src/shared/calendar-functions.js:157
+msgid "Last name"
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
+#: blocks/build/calendar/view.js:1
+#: blocks/src/shared/calendar-functions.js:158
+msgid "Book session"
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
+#: blocks/build/calendar/view.js:1
+#: blocks/src/shared/calendar-functions.js:112
+#: blocks/src/shared/calendar-functions.js:178
+msgid "Fully booked"
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
+#: blocks/build/calendar/view.js:1
+#: blocks/src/shared/calendar-functions.js:129
+msgid "Booking successful"
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
+#: blocks/build/calendar/view.js:1
+#: blocks/src/shared/calendar-functions.js:133
+msgid "You payment link: "
+msgstr ""
+
+#: blocks/build/calendar/index.js:1
 #: blocks/src/calendar/edit.js:84
 msgid "Content settings"
 msgstr ""
@@ -218,50 +230,6 @@ msgstr ""
 #: blocks/build/calendar/index.js:1
 #: blocks/src/calendar/edit.js:87
 msgid "Bookable item"
-msgstr ""
-
-#: blocks/src/shared/calendar-functions.js:123
-msgid "Book "
-msgstr ""
-
-#: blocks/src/shared/calendar-functions.js:127
-msgid "Email address"
-msgstr ""
-
-#: blocks/src/shared/calendar-functions.js:128
-msgid "First name"
-msgstr ""
-
-#: blocks/src/shared/calendar-functions.js:129
-msgid "Last name"
-msgstr ""
-
-#: blocks/src/shared/calendar-functions.js:130
-msgid "Book session"
-msgstr ""
-
-#: resources/javascript/myclub_booking_settings.js:51
-msgid "Reloading bookable items"
-msgstr ""
-
-#: resources/javascript/myclub_booking_settings.js:52
-msgid "The bookable items update task is currently running"
-msgstr ""
-
-#: resources/javascript/myclub_booking_settings.js:63
-msgid "Unable to reload bookables"
-msgstr ""
-
-#: resources/javascript/myclub_booking_settings.js:70
-msgid "Synchronizing slots"
-msgstr ""
-
-#: resources/javascript/myclub_booking_settings.js:71
-msgid "Slot synchronization is currently running"
-msgstr ""
-
-#: resources/javascript/myclub_booking_settings.js:82
-msgid "Unable to synchronize slots"
 msgstr ""
 
 #: blocks/build/calendar/block.json

@@ -98,22 +98,23 @@ export const loadEvents = (bookableId) => {
     }
 }
 
-export const submitBooking = (startTime, endTime, bookableId, slotId) => {
+export const submitBooking = (startTime, endTime, bookableId, slotId, closeModal) => {
     return function (event) {
         event.preventDefault();
         refetchSlot(bookableId, slotId).then((res) => {
             const form = event.target;
-            const email = form.querySelector('input[name="email"]').value;
-            const firstName = form.querySelector('input[name="first_name"]').value;
-            const lastName = form.querySelector('input[name="last_name"]').value;
             if (res.open_sessions.length === 0) {
-                form.querySelector('.myclub-button').disabled = true;
-                form.querySelector('.myclub-button').backgroundColor = '#ccc';
-                form.querySelector('.myclub-button').innerHTML = __('Fully booked', 'myclub-booking');
-                form.querySelector('input[name="email"]').disabled = true;
-                form.querySelector('input[name="first_name"]').disabled = true;
-                form.querySelector('input[name="last_name"]').disabled = true;
+                for (const item of form.querySelectorAll('.myclub-input-wrapper')) {
+                    item.remove();
+                }
+                form.querySelector('.myclub-button-wrapper').remove();
+                const bookingSuccessfulDiv = document.createElement("div");
+                bookingSuccessfulDiv.innerHTML = __('Sorry, this item is fully booked', 'myclub-booking');
+                form.appendChild(bookingSuccessfulDiv);
             } else {
+                const email = form.querySelector('input[name="email"]').value;
+                const firstName = form.querySelector('input[name="first_name"]').value;
+                const lastName = form.querySelector('input[name="last_name"]').value;
                 apiFetch({
                     path: `/myclub/v1/bookables/${bookableId}/slots/${slotId}/book`,
                     method: 'POST',
@@ -132,6 +133,12 @@ export const submitBooking = (startTime, endTime, bookableId, slotId) => {
                         const paymentLink = `https://app.myclub.se/payments/payment-orders/${res.member_id}/${res.payment_order_id}`;
                         paymentLinkDiv.innerHTML = __('You payment link: ', 'myclub-booking') + `<a href=${paymentLink}>${paymentLink}</a>`;
                         form.querySelector('#myclub-payment-link').appendChild(paymentLinkDiv)
+                    } else {
+                        setTimeout(
+                            () => {
+                                closeModal();
+                            }, 5000
+                        )
                     }
                 });
             }
@@ -160,7 +167,6 @@ export const showDialog = (item, modal, calendarRef) => {
     output += '</form>';
 
     content.innerHTML = output;
-    content.querySelector('form').addEventListener('submit', submitBooking(startTime, endTime, bookableId, slotId));
 
     modal.classList.add('modal-open');
     const closeModal = () => {
@@ -169,16 +175,18 @@ export const showDialog = (item, modal, calendarRef) => {
         close?.removeEventListener('click', closeModal);
     };
     close?.addEventListener('click', closeModal);
+    content.querySelector('form').addEventListener('submit', submitBooking(startTime, endTime, bookableId, slotId, closeModal));
 
     refetchSlot(bookableId, slotId).then((res) => {
         if (res.open_sessions.length === 0) {
             const form = content.querySelector('form');
-            form.querySelector('.myclub-button').disabled = true;
-            form.querySelector('.myclub-button').backgroundColor = '#ccc';
-            form.querySelector('.myclub-button').innerHTML = __('Fully booked', 'myclub-booking');
-            form.querySelector('input[name="email"]').disabled = true;
-            form.querySelector('input[name="first_name"]').disabled = true;
-            form.querySelector('input[name="last_name"]').disabled = true;
+            for (const item of form.querySelectorAll('.myclub-input-wrapper')) {
+                item.remove();
+            }
+            form.querySelector('.myclub-button-wrapper').remove();
+            const bookingSuccessfulDiv = document.createElement("div");
+            bookingSuccessfulDiv.innerHTML = __('Sorry, this item is fully booked', 'myclub-booking');
+            form.appendChild(bookingSuccessfulDiv);
         }
     })
 }

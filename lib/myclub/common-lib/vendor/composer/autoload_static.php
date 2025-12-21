@@ -4,24 +4,19 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc5f473acbfeca9b1e0310debeba4722e
+class ComposerStaticInitb81bb317c2c5db44334c993aa0b0d41b
 {
     public static $prefixLengthsPsr4 = array (
         'M' => 
         array (
-            'MyClub\\MyClubBooking\\' => 21,
             'MyClub\\Common\\' => 14,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'MyClub\\MyClubBooking\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
         'MyClub\\Common\\' => 
         array (
-            0 => __DIR__ . '/..' . '/myclub/common-lib/src',
+            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 
@@ -32,9 +27,9 @@ class ComposerStaticInitc5f473acbfeca9b1e0310debeba4722e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc5f473acbfeca9b1e0310debeba4722e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc5f473acbfeca9b1e0310debeba4722e::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc5f473acbfeca9b1e0310debeba4722e::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb81bb317c2c5db44334c993aa0b0d41b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb81bb317c2c5db44334c993aa0b0d41b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb81bb317c2c5db44334c993aa0b0d41b::$classMap;
 
         }, null, ClassLoader::class);
     }

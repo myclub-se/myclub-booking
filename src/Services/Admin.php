@@ -114,7 +114,7 @@ class Admin extends Base
         $input = sanitize_text_field($input);
 
         $api = new RestApi($input);
-        if ($api->load_bookables()->status !== 200) {
+        if ($api->loadBookables()->status !== 200) {
             add_settings_error('myclub_booking_api_key', 'invalid-api-key', __('Invalid API key entered', 'myclub-booking'));
             return get_option('myclub_booking_api_key');
         } else {

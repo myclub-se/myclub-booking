@@ -6,6 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'MyClub\\MyClubBooking\\' => array($baseDir . '/src'),
-    'MyClub\\Common\\' => array($vendorDir . '/myclub/common-lib/src'),
+    'MyClub\\Common\\' => array($baseDir . '/src'),
 );

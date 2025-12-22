@@ -106,7 +106,7 @@ class Api
     public function return_bookables(): WP_REST_Response
     {
         $rest_api = new RestApi();
-        $myclub_bookables = $rest_api->load_bookables()->result;
+        $myclub_bookables = $rest_api->loadBookables()->result;
 
         return new WP_REST_Response($myclub_bookables, 200);
     }
@@ -118,7 +118,7 @@ class Api
         $end_date = $request['end_date'];
 
         $rest_api = new RestApi();
-        $myclub_bookable_slots = $rest_api->load_bookable_slots($bookable_id, $start_date, $end_date)->result;
+        $myclub_bookable_slots = $rest_api->loadBookableSlots($bookable_id, $start_date, $end_date)->result;
 
         return new WP_REST_Response($myclub_bookable_slots, 200);
     }
@@ -129,7 +129,7 @@ class Api
         $slot_id = $request['slot_id'];
 
         $rest_api = new RestApi();
-        $myclub_bookable_slots = $rest_api->load_bookable_slot($bookable_id, $slot_id)->result;
+        $myclub_bookable_slots = $rest_api->loadBookableSlot($bookable_id, $slot_id)->result;
 
         return new WP_REST_Response($myclub_bookable_slots, 200);
     }
@@ -151,7 +151,7 @@ class Api
         }
 
         $rest_api = new RestApi();
-        $myclub_booked_session = $rest_api->book_slot($bookable_id, $slot_id, $start_time, $end_time, $email, $first_name, $last_name)->result;
+        $myclub_booked_session = $rest_api->bookSlot($bookable_id, $slot_id, $start_time, $end_time, $email, $first_name, $last_name)->result;
 
         return new WP_REST_Response($myclub_booked_session, 200);
     }

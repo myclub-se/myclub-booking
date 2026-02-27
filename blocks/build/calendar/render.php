@@ -31,6 +31,11 @@ if ( !empty( $attributes ) ) {
              data-first-day-of-week="<?php echo esc_attr( get_option( 'start_of_week', 1 ) ); ?>"
         ></div>
     </div>
+    <div id="selected-slots-panel" class="myclub-selected-slots-panel">
+        <span class="myclub-panel-label"><?php echo esc_html__( 'Selected', 'myclub-booking' ); ?></span>
+        <div id="selected-slots-list" class="myclub-selected-slots-list"></div>
+        <button id="book-selected-slots-btn" class="myclub-book-btn"></button>
+    </div>
     <div id="calendar-modal" class="calendar-modal">
         <div class="modal-content">
             <span class="close">&times;</span>

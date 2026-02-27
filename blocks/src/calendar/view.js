@@ -1,4 +1,4 @@
-import {getCalendarLocale, getFullCalendarOptions, showDialog, loadEvents} from "../shared/calendar-functions";
+import {getCalendarLocale, getFullCalendarOptions, loadEvents, toggleSlotSelection, updateSelectedSlotsPanel} from "../shared/calendar-functions";
 
 document.addEventListener('DOMContentLoaded', () => {
     const smallScreen = document.documentElement.clientWidth < 960;
@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const labels = JSON.parse(calendarEl.dataset.labels);
     const bookableId = calendarEl.dataset.bookableId;
     const firstDayOfWeek = calendarEl.dataset.firstDayOfWeek;
+    const modal = document.getElementById("calendar-modal");
+    const selectedSlots = [];
 
     const calendar = new FullCalendar.Calendar(calendarEl, getFullCalendarOptions({
         labels,
@@ -15,14 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         smallScreen,
         plugins: [],
         showEvent: (arg) => {
-            const item = arg.event;
-            const modal = document.getElementById("calendar-modal");
-
-            if (modal) {
-                showDialog(item, modal, calendar);
-            }
+            toggleSlotSelection(arg.event, selectedSlots, calendar, modal);
         }
     }));
 
     calendar.render();
+
+    updateSelectedSlotsPanel(selectedSlots, calendar, modal);
 });

@@ -81,6 +81,15 @@ class Api
             )
         ]);
 
+        register_rest_route('myclub/v1', '/bookables/sessions/bulk', [
+            'methods' => 'POST',
+            'callback' => [
+                $this,
+                'book_slots_bulk'
+            ],
+            'permission_callback' => '__return_true',
+        ]);
+
         register_rest_route('myclub/v1', '/bookables/(?P<id>\w+)/slots/(?P<slot_id>\w+)/book', [
             'methods' => 'POST',
             'callback' => [
@@ -154,6 +163,25 @@ class Api
         $myclub_booked_session = $rest_api->bookSlot($bookable_id, $slot_id, $start_time, $end_time, $email, $first_name, $last_name)->result;
 
         return new WP_REST_Response($myclub_booked_session, 200);
+    }
+
+    public function book_slots_bulk(WP_REST_Request $request): WP_REST_Response
+    {
+        $email = $request['email'];
+        $first_name = $request['first_name'];
+        $last_name = $request['last_name'];
+        $sessions = $request['sessions'];
+        if (empty($first_name) || $first_name === 'null' || $first_name === 'undefined') {
+            $first_name = null;
+        }
+        if (empty($last_name) || $last_name === 'null' || $last_name === 'undefined') {
+            $last_name = null;
+        }
+
+        $rest_api = new RestApi();
+        $result = $rest_api->bookSlotsBulk($email, $sessions, $first_name, $last_name)->result;
+
+        return new WP_REST_Response($result, 200);
     }
 
     public function return_options(): WP_REST_Response

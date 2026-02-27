@@ -38,6 +38,34 @@ class BaseUtils
     }
 
     /**
+     * Retrieves the version of a plugin given its main file name.
+     *
+     * @param string $main_file_name The main file name of the plugin (without the .php extension).
+     *
+     * @return string The version number of the plugin if found, or an empty string if not found.
+     */
+    static function getPluginVersion( string $main_file_name ): string
+    {
+        static $plugins = null;
+
+        if ( null === $plugins ) {
+            if ( ! function_exists( 'get_plugins' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            }
+            $plugins = get_plugins();
+        }
+
+        // Search the plugins array for a key that ends with our main file name
+        foreach ( $plugins as $plugin_path => $plugin_data ) {
+            if ( basename( $plugin_path ) === $main_file_name . '.php' ) {
+                return $plugin_data['Version'] ?? '';
+            }
+        }
+
+        return '';
+    }
+
+    /**
      * Clears the cache for a specific page or post based on the detected caching plugin.
      *
      * @param int $post_id The ID of the post or page whose cache needs to be cleared.
@@ -49,7 +77,7 @@ class BaseUtils
      */
     static function clearCacheForPage( int $post_id ): bool
     {
-        $cache_plugin = Utils::detectCachePlugin();
+        $cache_plugin = static::detectCachePlugin();
 
         try {
             switch ( $cache_plugin ) {
@@ -265,7 +293,7 @@ class BaseUtils
     {
         foreach ( $array as $key => &$value ) {
             if ( is_array( $value ) ) {
-                $value = BaseUtils::sanitizeArray( $value );
+                $value = static::sanitizeArray( $value );
             } else {
                 $value = sanitize_text_field( $value );
             }

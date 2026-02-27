@@ -62,6 +62,7 @@ export const setupEvents = (slots) => {
         let backgroundColor = '#395B9E';
 
         return {
+            id: slot.id,
             title: slot.bookable_name,
             start: `${slot.day} ${slot.start_time}`,
             end: `${slot.day} ${slot.end_time}`,
@@ -73,6 +74,7 @@ export const setupEvents = (slots) => {
                 base_type: slot.base_type,
                 calendar_name: slot.calendar_name,
                 location: slot.location,
+                day: slot.day,
                 endTime: slot.end_time,
                 startTime: slot.start_time,
                 bookableId: slot.bookable_id,
@@ -98,95 +100,131 @@ export const loadEvents = (bookableId) => {
     }
 }
 
-export const submitBooking = (startTime, endTime, bookableId, slotId, closeModal) => {
-    return function (event) {
-        event.preventDefault();
-        refetchSlot(bookableId, slotId).then((res) => {
-            const form = event.target;
-            if (res.open_sessions.length === 0) {
-                for (const item of form.querySelectorAll('.myclub-input-wrapper')) {
-                    item.remove();
-                }
-                form.querySelector('.myclub-button-wrapper').remove();
-                const bookingSuccessfulDiv = document.createElement("div");
-                bookingSuccessfulDiv.innerHTML = __('Sorry, this item is fully booked', 'myclub-booking');
-                form.appendChild(bookingSuccessfulDiv);
-            } else {
-                const email = form.querySelector('input[name="email"]').value;
-                const firstName = form.querySelector('input[name="first_name"]').value;
-                const lastName = form.querySelector('input[name="last_name"]').value;
-                apiFetch({
-                    path: `/myclub/v1/bookables/${bookableId}/slots/${slotId}/book`,
-                    method: 'POST',
-                    data: {
-                        first_name: firstName,
-                        last_name: lastName,
-                        email: email,
-                        start_time: startTime,
-                        end_time: endTime
-                    },
-                }).then((res) => {
-                    form.querySelector('.myclub-button').disabled = true;
-                    form.querySelector('.myclub-button').innerHTML = __('Booking successful', 'myclub-booking');
-                    if (res.payment_order_id) {
-                        const paymentLinkDiv = document.createElement("div");
-                        const paymentLink = `https://app.myclub.se/payments/payment-orders/${res.member_id}/${res.payment_order_id}`;
-                        paymentLinkDiv.innerHTML = __('You payment link: ', 'myclub-booking') + `<a href=${paymentLink}>${paymentLink}</a>`;
-                        form.querySelector('#myclub-payment-link').appendChild(paymentLinkDiv)
-                    } else {
-                        setTimeout(
-                            () => {
-                                closeModal();
-                            }, 5000
-                        )
-                    }
-                });
-            }
-        });
-    }
-}
-
 export const refetchSlot = (bookableId, slotId) => {
     return apiFetch({path: `/myclub/v1/bookables/${bookableId}/slots/${slotId}`});
 }
 
-export const showDialog = (item, modal, calendarRef) => {
-    const {startTime, endTime, bookableId, bookableName, slotId} = item.extendedProps;
+const SELECTED_COLOR = '#2d7a2d';
+const DEFAULT_COLOR = '#395B9E';
+
+export const updateSelectedSlotsPanel = (selectedSlots, calendarRef, modal) => {
+    const panel = document.getElementById('selected-slots-panel');
+    const list = document.getElementById('selected-slots-list');
+    const bookBtn = document.getElementById('book-selected-slots-btn');
+    if (!panel || !list || !bookBtn) return;
+
+    if (selectedSlots.length === 0) {
+        panel.classList.remove('is-visible');
+        return;
+    }
+
+    panel.classList.add('is-visible');
+    bookBtn.textContent = __('Book %d slot(s)', 'myclub-booking').replace('%d', selectedSlots.length);
+
+    list.innerHTML = '';
+    selectedSlots.forEach((slot) => {
+        const item = document.createElement('div');
+        item.className = 'myclub-selected-slot-item';
+        const [y, m, d] = slot.day.split('-');
+        const dateStr = new Date(y, m - 1, d).toLocaleDateString(undefined, {month: 'short', day: 'numeric'});
+        const label = document.createElement('span');
+        label.textContent = `${slot.title} · ${dateStr}, ${slot.startTime.slice(0, 5)}–${slot.endTime.slice(0, 5)}`;
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'myclub-remove-slot';
+        removeBtn.setAttribute('aria-label', __('Remove', 'myclub-booking'));
+        removeBtn.textContent = '×';
+        removeBtn.addEventListener('click', () => {
+            const idx = selectedSlots.findIndex(s => s.slotId === slot.slotId);
+            if (idx !== -1) {
+                selectedSlots.splice(idx, 1);
+                const fcEvent = calendarRef.getEventById(slot.slotId);
+                if (fcEvent) {
+                    fcEvent.setProp('backgroundColor', DEFAULT_COLOR);
+                    fcEvent.setProp('borderColor', DEFAULT_COLOR);
+                }
+                updateSelectedSlotsPanel(selectedSlots, calendarRef, modal);
+            }
+        });
+        item.appendChild(label);
+        item.appendChild(removeBtn);
+        list.appendChild(item);
+    });
+
+    bookBtn.onclick = () => showBulkBookingDialog(selectedSlots, calendarRef, modal);
+};
+
+export const toggleSlotSelection = (fcEvent, selectedSlots, calendarRef, modal) => {
+    const {slotId, bookableId, startTime, endTime, day} = fcEvent.extendedProps;
+    const idx = selectedSlots.findIndex(s => s.slotId === slotId);
+    if (idx === -1) {
+        selectedSlots.push({slotId, bookableId, startTime, endTime, day, title: fcEvent.title});
+        fcEvent.setProp('backgroundColor', SELECTED_COLOR);
+        fcEvent.setProp('borderColor', SELECTED_COLOR);
+    } else {
+        selectedSlots.splice(idx, 1);
+        fcEvent.setProp('backgroundColor', DEFAULT_COLOR);
+        fcEvent.setProp('borderColor', DEFAULT_COLOR);
+    }
+    updateSelectedSlotsPanel(selectedSlots, calendarRef, modal);
+};
+
+export const showBulkBookingDialog = (selectedSlots, calendarRef, modal) => {
+    if (selectedSlots.length === 0) return;
     const content = modal?.querySelector('.modal-body');
     const close = modal?.querySelector('.close');
 
-    const title = __("Book ", 'myclub-booking') + `${bookableName} (${startTime} - ${endTime})`;
-
-    let output = `<div class="name" id="booking-form">${title}</div>`;
+    const slotCount = selectedSlots.length;
+    let output = `<div class="name" id="booking-form">${__('Book selected slots', 'myclub-booking')} (${slotCount})</div>`;
     output += '<form class="myclub-form">';
-    output += `<div class="myclub-input-wrapper"><label>${__("Email address", 'myclub-booking')}</label><input class="myclub-input" name="email" type="email" required></input></div>`;
-    output += `<div class="myclub-input-wrapper"><label>${__("First name", 'myclub-booking')}</label><input class="myclub-input" name="first_name" type="text" required></input></div>`;
-    output += `<div class="myclub-input-wrapper"><label>${__("Last name", 'myclub-booking')}</label><input class="myclub-input" name="last_name" type="text" required></input></div>`;
-    output += `<div class="myclub-button-wrapper"><button type="submit" class="myclub-button">${__("Book session", 'myclub-booking')}</div>`;
+    output += `<div class="myclub-input-wrapper"><label for="mc-email">${__("Email address", 'myclub-booking')}</label><input id="mc-email" class="myclub-input" name="email" type="email" autocomplete="email" required></div>`;
+    output += `<div class="myclub-input-wrapper"><label for="mc-first">${__("First name", 'myclub-booking')}</label><input id="mc-first" class="myclub-input" name="first_name" type="text" autocomplete="given-name"></div>`;
+    output += `<div class="myclub-input-wrapper"><label for="mc-last">${__("Last name", 'myclub-booking')}</label><input id="mc-last" class="myclub-input" name="last_name" type="text" autocomplete="family-name"></div>`;
+    output += `<div class="myclub-button-wrapper"><button type="submit" class="myclub-button">${__("Confirm booking", 'myclub-booking')}</button></div>`;
     output += `<div id="myclub-payment-link"></div>`;
     output += '</form>';
 
     content.innerHTML = output;
-
     modal.classList.add('modal-open');
+
     const closeModal = () => {
-        calendarRef.refetchEvents();
         modal.classList.remove('modal-open');
         close?.removeEventListener('click', closeModal);
     };
     close?.addEventListener('click', closeModal);
-    content.querySelector('form').addEventListener('submit', submitBooking(startTime, endTime, bookableId, slotId, closeModal));
 
-    refetchSlot(bookableId, slotId).then((res) => {
-        if (res.open_sessions.length === 0) {
-            const form = content.querySelector('form');
-            for (const item of form.querySelectorAll('.myclub-input-wrapper')) {
-                item.remove();
+    content.querySelector('form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const email = form.querySelector('input[name="email"]').value;
+        const firstName = form.querySelector('input[name="first_name"]').value;
+        const lastName = form.querySelector('input[name="last_name"]').value;
+
+        const sessions = selectedSlots.map(slot => ({
+            slot_id: slot.slotId,
+            start_time: slot.startTime,
+            end_time: slot.endTime,
+            bookable_zones_taken: 1,
+        }));
+
+        apiFetch({
+            path: '/myclub/v1/bookables/sessions/bulk',
+            method: 'POST',
+            data: {email, first_name: firstName, last_name: lastName, sessions},
+        }).then((res) => {
+            form.querySelector('.myclub-button').disabled = true;
+            form.querySelector('.myclub-button').innerHTML = __('Booking successful', 'myclub-booking');
+            selectedSlots.splice(0, selectedSlots.length);
+            updateSelectedSlotsPanel(selectedSlots, calendarRef, modal);
+            calendarRef.refetchEvents();
+            if (res.payment_order_id) {
+                const paymentLink = `https://app.myclub.se/payments/payment-orders/${res.member_id}/${res.payment_order_id}`;
+                const paymentLinkDiv = document.createElement("div");
+                paymentLinkDiv.innerHTML = __('Your payment link: ', 'myclub-booking') + `<a href="${paymentLink}">${paymentLink}</a>`;
+                form.querySelector('#myclub-payment-link').appendChild(paymentLinkDiv);
+                window.location.href = paymentLink;
+            } else {
+                setTimeout(() => closeModal(), 3000);
             }
-            form.querySelector('.myclub-button-wrapper').remove();
-            const bookingSuccessfulDiv = document.createElement("div");
-            bookingSuccessfulDiv.innerHTML = __('Sorry, this item is fully booked', 'myclub-booking');
-            form.appendChild(bookingSuccessfulDiv);
-        }
-    })
-}
+        });
+    });
+};

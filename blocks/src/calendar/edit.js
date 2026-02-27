@@ -6,7 +6,7 @@ import {__} from "@wordpress/i18n";
 
 import {getMyClubBookables} from "../shared/edit-functions";
 import FullCalendar from "@fullcalendar/react";
-import {getCalendarLocale, getFullCalendarOptions, showDialog, loadEvents} from "../shared/calendar-functions";
+import {getCalendarLocale, getFullCalendarOptions, toggleSlotSelection, loadEvents} from "../shared/calendar-functions";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
@@ -51,13 +51,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		label: __( 'Select a bookable item', 'myclub-booking' ),
 		value: ''
 	};
+	const editorSelectedSlots = [];
 	const handleShowEvent = (arg) => {
-		const item = arg.event;
 		const modal = modalRef?.current;
-
-		if (modal) {
-			showDialog(item, modal, calendarRef.current.getApi());
-		}
+		toggleSlotSelection(arg.event, editorSelectedSlots, calendarRef.current.getApi(), modal);
 	};
 
 	const options = useMemo(() => getFullCalendarOptions({

@@ -1,25 +1,25 @@
 @use '../shared/modal';
+
+// ── Calendar wrapper ──────────────────────────────────────────────────────────
 .myclub-booking-calendar {
   position: relative;
   margin-bottom: 2rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
 
   .myclub-booking-calendar-container {
     width: 100%;
   }
 
+  // ── Booking modal ─────────────────────────────────────────────────────────
   .calendar-modal {
     display: none;
     position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    z-index: 1000;
+    inset: 0;
     overflow: auto;
-    background-color: rgb(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.45);
     justify-content: center;
     align-items: center;
 
@@ -28,87 +28,122 @@
     }
 
     .modal-content {
-      width: 500px;
-      background-color: #fff;
-      border-radius: 8px;
-      padding: 20px;
+      width: 100%;
+      max-width: 460px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
+      margin: 1rem;
 
       .close {
-        font-size: 28px;
-        font-weight: bold;
+        font-size: 22px;
+        font-weight: 400;
         float: right;
         cursor: pointer;
+        color: #94a3b8;
+        line-height: 1;
+        transition: color 0.15s;
+
+        &:hover { color: #0f172a; }
       }
 
       .modal-body {
+        margin-top: 6px;
+        clear: both;
+
         .name {
-          font-size: larger;
-          font-weight: bold;
-          margin-top: 1rem;
-          margin-bottom: 1rem;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #0f172a;
+          margin-bottom: 1.25rem;
+          padding-bottom: 1rem;
+          border-bottom: 1.5px solid #f1f5f9;
+          letter-spacing: -0.01em;
+          line-height: 1.4;
         }
 
         .myclub-form {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 12px;
         }
 
         .myclub-input-wrapper {
           display: flex;
-          justify-content: space-between;
-          gap: 10px;
+          flex-direction: column;
+          gap: 5px;
+
+          label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+          }
         }
 
         .myclub-input {
-          flex-grow: 1;
-          max-width: 70%;
-          padding: 2px 10px;
+          width: 100%;
+          max-width: 100%;
+          padding: 10px 13px;
           box-sizing: border-box;
-          font-size: 16px;
-          border-radius: 4px;
-          border: 1px solid #ccc;
+          font-size: 15px;
+          border-radius: 8px;
+          border: 1.5px solid #e2e8f0;
+          background: #f8fafc;
+          transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+
+          &:focus {
+            outline: none;
+            border-color: #395B9E;
+            box-shadow: 0 0 0 3px rgba(57, 91, 158, 0.12);
+            background: #fff;
+          }
         }
 
         .myclub-button-wrapper {
-          margin-left: -4px;
+          margin-top: 6px;
         }
 
         .myclub-button {
-          background-color: #3f51b5;
-          border: 4px solid;
-          border-radius: 4px;
-          color: white;
-          padding: 10px 20px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 16px;
+          width: 100%;
+          background: #395B9E;
+          border: none;
+          border-radius: 8px;
+          color: #fff;
+          padding: 12px 20px;
+          font-size: 15px;
+          font-weight: 600;
           cursor: pointer;
+          letter-spacing: 0.01em;
+          transition: background 0.15s, transform 0.1s, opacity 0.15s;
+
+          &:hover:not(:disabled) {
+            background: #2d4a87;
+            transform: translateY(-1px);
+          }
+
+          &:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+          }
         }
 
-        table {
-          width: 100%;
-          border-collapse: collapse;
+        #myclub-payment-link {
+          margin-top: 10px;
+          font-size: 0.85rem;
+          word-break: break-all;
+          color: #395B9E;
 
-          tr {
-            border-bottom: 1px solid #ccc;
-
-            th, td {
-              font-size: smaller;
-              padding: 1rem 0;
-              text-align: left;
-            }
-
-            th {
-              font-weight: bold;
-            }
-          }
+          a { color: inherit; }
         }
       }
     }
   }
 
+  // ── FullCalendar overrides ────────────────────────────────────────────────
   .fc {
     .fc-list-event-graphic {
       display: none;
@@ -131,15 +166,16 @@
     }
 
     .fc-button-primary {
-      background-color: transparent!important;
-      border-color: transparent!important;
-      border-width: 1px!important;
-      color: rgb(33, 32, 46)!important;
+      background-color: transparent !important;
+      border-color: transparent !important;
+      border-width: 1px !important;
+      color: rgb(33, 32, 46) !important;
 
-      &:not(:disabled).fc-button-active, &:not(:disabled):active {
-        background-color: #1a252f!important;
-        border-color: #151e27!important;
-        color: #fff!important;
+      &:not(:disabled).fc-button-active,
+      &:not(:disabled):active {
+        background-color: #1a252f !important;
+        border-color: #151e27 !important;
+        color: #fff !important;
       }
     }
   }
@@ -157,18 +193,134 @@
   }
 }
 
-@media (min-width: 996px) {
-  .myclub-booking-calendar {
-    .myclub-booking-calendar-container {
-      max-width: 996px;
+// ── Selected Slots — fixed bottom booking bar ─────────────────────────────────
+.myclub-selected-slots-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 24px;
+  background: #0f172a;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.28);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  &.is-visible {
+    transform: translateY(0);
+  }
+
+  .myclub-panel-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .myclub-selected-slots-list {
+    display: flex;
+    gap: 7px;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .myclub-selected-slot-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(57, 91, 158, 0.35);
+    border: 1px solid rgba(57, 91, 158, 0.55);
+    border-radius: 100px;
+    padding: 5px 8px 5px 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    animation: chip-in 0.2s ease;
+
+    span {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+  }
+
+  .myclub-remove-slot {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
+    }
+  }
+
+  .myclub-book-btn {
+    flex-shrink: 0;
+    background: #395B9E;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    transition: background 0.15s, transform 0.12s;
+
+    &:hover {
+      background: #2d4a87;
+      transform: translateY(-1px);
     }
   }
 }
 
+@keyframes chip-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+// ── Responsive ───────────────────────────────────────────────────────────────
+@media (min-width: 996px) {
+  .myclub-booking-calendar .myclub-booking-calendar-container {
+    max-width: 996px;
+  }
+}
+
 @media (min-width: 1200px) {
-  .myclub-booking-calendar {
-    .myclub-booking-calendar-container {
-      max-width: 1200px;
-    }
+  .myclub-booking-calendar .myclub-booking-calendar-container {
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 600px) {
+  .myclub-selected-slots-panel {
+    padding: 10px 14px;
+    gap: 10px;
+
+    .myclub-panel-label { display: none; }
+    .myclub-book-btn { padding: 8px 14px; font-size: 0.8rem; }
   }
 }

@@ -15,9 +15,9 @@ use MyClub\Common\Api\BaseRestApi as CommonRestApi;
  */
 class RestApi extends CommonRestApi
 {
-//     const MYCLUB_SERVER_API_PATH = 'https://member.myclub.se/api/v3/external/';
+    const MYCLUB_SERVER_API_PATH = 'https://member.myclub.se/api/v3/external/';
     // Added for development purposes
-    const MYCLUB_SERVER_API_PATH = 'http://localhost:8000/api/v3/external/';
+    // const MYCLUB_SERVER_API_PATH = 'http://localhost:8000/api/v3/external/';
 
     protected string $apiKeyOptionName = 'myclub_booking_api_key';
 

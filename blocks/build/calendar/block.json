@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "attributes": {
+    "bookable_id": {
+      "type": "string",
+      "default": ""
+    },
+    "post_id": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "name": "myclub-booking/calendar",
+  "version": "0.9.0",
+  "title": "MyClub Booking Calendar",
+  "category": "myclub",
+  "icon": "calendar-alt",
+  "description": "Display calendar for a selected bookable item",
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "textdomain": "myclub-booking",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js"
+}

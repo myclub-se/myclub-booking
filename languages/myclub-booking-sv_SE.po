@@ -1,0 +1,277 @@
+# Copyright (C) 2025 MyClub AB
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: MyClub Booking 0.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-booking\n"
+"POT-Creation-Date: 2026-03-16T14:04:12+00:00\n"
+"PO-Revision-Date: 2026-03-16 15:08+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.9\n"
+"X-Domain: myclub-booking\n"
+
+#. Plugin Name of the plugin
+#: myclub-booking.php src/Services/Admin.php:35
+msgid "MyClub Booking"
+msgstr "MyClub bokning"
+
+#. Plugin URI of the plugin
+#: myclub-booking.php
+msgid "https://github.com/myclub-se/myclub-booking"
+msgstr ""
+
+#. Description of the plugin
+#: myclub-booking.php
+msgid ""
+"Retrieves booking information from the MyClub member administration "
+"platform. Creates a Gutenberg block and shortcode to display bookable items."
+msgstr ""
+"Hämtar bokningsinformation från MyClubs medlemssystem. Skapar ett Gutenberg "
+"block och en kortkod för att visa bokningsbara objekt."
+
+#. Author of the plugin
+#: myclub-booking.php
+msgid "MyClub AB"
+msgstr ""
+
+#. Author URI of the plugin
+#: myclub-booking.php
+msgid "https://www.myclub.se"
+msgstr ""
+
+#: blocks/build/calendar/render.php:14 blocks/src/calendar/render.php:14
+#: templates/admin/admin_settings.php:46 blocks/build/calendar/index.js:3
+#: blocks/src/calendar/edit.js:15
+msgid "Calendar"
+msgstr "Kalender"
+
+#: blocks/build/calendar/render.php:15 blocks/src/calendar/render.php:15
+msgid "today"
+msgstr "idag"
+
+#: blocks/build/calendar/render.php:16 blocks/src/calendar/render.php:16
+msgid "day"
+msgstr "dag"
+
+#: blocks/build/calendar/render.php:17 blocks/src/calendar/render.php:17
+msgid "month"
+msgstr "månad"
+
+#: blocks/build/calendar/render.php:18 blocks/src/calendar/render.php:18
+msgid "week"
+msgstr "vecka"
+
+#: blocks/build/calendar/render.php:19 blocks/src/calendar/render.php:19
+msgid "list"
+msgstr "lista"
+
+#: blocks/build/calendar/render.php:20 blocks/src/calendar/render.php:20
+#: blocks/build/calendar/index.js:3 blocks/src/calendar/edit.js:19
+msgid "W"
+msgstr "V"
+
+#: blocks/build/calendar/render.php:21 blocks/src/calendar/render.php:21
+#: blocks/build/calendar/index.js:3 blocks/src/calendar/edit.js:20
+msgid "Week"
+msgstr "Vecka"
+
+#: blocks/build/calendar/render.php:33 blocks/src/calendar/render.php:33
+msgid "Selected"
+msgstr "Vald"
+
+#: src/Activation.php:28
+msgid "Booking Calendar"
+msgstr "Bokningskalender"
+
+#: src/Services/Admin.php:34
+msgid "MyClub Booking plugin settings"
+msgstr "MyClub bokning plugin inställningar"
+
+#: src/Services/Admin.php:60
+msgid "MyClub Booking Calendar title"
+msgstr "MyClub bokning kalendertitel"
+
+#: src/Services/Admin.php:63
+msgid "MyClub Booking Main Settings"
+msgstr "MyClub bokning huvudinställningar"
+
+#: src/Services/Admin.php:66
+msgid "MyClub API Key"
+msgstr "MyClub API nyckel"
+
+#: src/Services/Admin.php:70
+msgid "Booking Calendar title"
+msgstr "Titel för bokningskalendern"
+
+#: src/Services/Admin.php:78
+msgid "Settings"
+msgstr "Inställningar"
+
+#: src/Services/Admin.php:119
+msgid "Invalid API key entered"
+msgstr "Ogiltig API nyckel"
+
+#: src/Services/Blocks.php:56
+msgid "Display calendar for a selected bookable item"
+msgstr "Visa kalendern för vald bokningsbart objekt"
+
+#: src/Services/Blocks.php:61
+msgid "MyClub Booking Calendar"
+msgstr "MyClub bokningskalender"
+
+#: templates/admin/admin_settings.php:29
+msgid "MyClub Booking settings"
+msgstr "MyClub bokning inställningar"
+
+#: templates/admin/admin_settings.php:31
+msgid "General settings"
+msgstr "Allmänna inställningar"
+
+#: templates/admin/admin_settings.php:32 templates/admin/admin_settings.php:42
+msgid "Gutenberg blocks"
+msgstr "Gutenberg block"
+
+#: templates/admin/admin_settings.php:33 templates/admin/admin_settings.php:50
+msgid "Shortcodes"
+msgstr "Kortkoder"
+
+#: templates/admin/admin_settings.php:43
+msgid "Here are the Gutenberg blocks available from the MyClub booking plugin"
+msgstr ""
+"Nedan finner du de Gutenberg block som finns tillgängliga i MyClub "
+"bokningspluginet"
+
+#: templates/admin/admin_settings.php:44
+msgid "The Gutenberg blocks require a bookable_id parameter."
+msgstr "Gutenberg blocken kräver en bookable_id parameter."
+
+#: templates/admin/admin_settings.php:46
+msgid ""
+"The calendar block will display a booking calendar. The available attribute "
+"is <code>bookable_id</code> which is the MyClub Bookable item id."
+msgstr ""
+"Kalenderblocket visar en bokningskalender. Det tillgängliga attributet är "
+"<code>bookable_id</code> vilket är MyClubs bokningsbara objekt ID."
+
+#: templates/admin/admin_settings.php:51
+msgid "Here are the shortcodes available from the MyClub booking plugin"
+msgstr "Here are the shortcodes available from the MyClub booking plugin"
+
+#: templates/admin/admin_settings.php:52
+msgid ""
+"The shortcode requires a bookable_id parameter. The bookable_id parameter "
+"can be found in the table below - the bookable_id parameter is required."
+msgstr ""
+"Kortkoden kräver en bookable_id-parameter. Parametern bookable_id finns i "
+"tabellen nedan - parametern bookable_id är obligatorisk."
+
+#: templates/admin/admin_settings.php:54
+msgid ""
+"The calendar shortcode will display a booking calendar. The available "
+"attributes are <code>bookable_id</code> which is the MyClub bookable id. "
+"This is required."
+msgstr ""
+"Kalendern kortkoden visar en bokningskalender. De tillgängliga attributen är "
+"<code>bookable_id</code> vilket är MyClubs bokningsbara ID. Detta är "
+"obligatoriskt."
+
+#: templates/admin/admin_settings.php:59
+msgid "Available bookable objects are:"
+msgstr "Tillgängliga bokningsbara objekt är:"
+
+#: templates/admin/admin_settings.php:64
+msgid "ID"
+msgstr "ID"
+
+#: templates/admin/admin_settings.php:65 blocks/build/calendar/index.js:3
+#: blocks/src/calendar/edit.js:16
+msgid "Name"
+msgstr "Namn"
+
+#: templates/admin/admin_settings.php:80
+msgid "No bookable objects found."
+msgstr "Inga bokningsbara objekt hittades."
+
+#. translators: %d: number of selected booking slots
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:123
+msgid "Book %d slot"
+msgid_plural "Book %d slots"
+msgstr[0] "Boka %d tid"
+msgstr[1] "Boka %d tider"
+
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:135
+msgid "Remove"
+msgstr "Ta bort"
+
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:178
+msgid "Book selected slots"
+msgstr "Boka valda tider"
+
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:180
+msgid "Email address"
+msgstr "E-postadress"
+
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:181
+msgid "First name"
+msgstr "Förnamn"
+
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:182
+msgid "Last name"
+msgstr "Efternamn"
+
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:183
+msgid "Confirm booking"
+msgstr "Bekräfta bokning"
+
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:216
+msgid "Booking successful"
+msgstr "Bokningen lyckades"
+
+#: blocks/build/calendar/index.js:3 blocks/build/calendar/view.js:3
+#: blocks/src/shared/calendar-functions.js:223
+msgid "Your payment link: "
+msgstr "Din betalningslänk:"
+
+#: blocks/build/calendar/index.js:3 blocks/src/calendar/edit.js:17
+msgid "When"
+msgstr "När"
+
+#: blocks/build/calendar/index.js:3 blocks/src/calendar/edit.js:18
+msgid "Location"
+msgstr "Plats"
+
+#: blocks/build/calendar/index.js:3 blocks/src/calendar/edit.js:51
+msgid "Select a bookable item"
+msgstr "Välj ett bokningsbart objekt"
+
+#: blocks/build/calendar/index.js:3 blocks/src/calendar/edit.js:81
+msgid "Content settings"
+msgstr "Innehållsinställningar"
+
+#: blocks/build/calendar/index.js:3 blocks/src/calendar/edit.js:84
+msgid "Bookable item"
+msgstr "Bokningsbart objekt"
+
+#: blocks/build/calendar/block.json blocks/src/calendar/block.json
+msgctxt "block title"
+msgid "MyClub Booking Calendar"
+msgstr "MyClub bokningskalender"
+
+#: blocks/build/calendar/block.json blocks/src/calendar/block.json
+msgctxt "block description"
+msgid "Display calendar for a selected bookable item"
+msgstr "Visa en bokningskalender för valt bokningsbart objekt"

@@ -1,0 +1,34 @@
+#myclub-tabs ul {
+    margin: 12px 0 4px;
+}
+
+#myclub-tabs ul li.tabs {
+    border: 1px solid #dcdcdc;
+    background-color: #fff;
+    display: inline;
+    position: relative;
+    padding: 3px 5px 6px;
+}
+
+#myclub-tabs ul li.tabs a, #myclub-tabs ul li.tabs a:hover, #myclub-tabs ul li.tabs a:visited, #myclub-tabs ul li.tabs a:focus, #myclub-tabs ul li.tabs a:active {
+    color: #333;
+    text-decoration: none;
+    outline: none;
+    box-shadow: none;
+}
+
+#myclub-tabs ul li.tabs.ui-state-active {
+    border-bottom-color: #fff;
+}
+
+#myclub-tabs ul li.tabs.ui-state-active a {
+    font-weight: bold;
+}
+
+#myclub-tabs .tabs-panel {
+    max-height: 250px;
+    overflow: auto;
+    padding: 0 0.9em;
+    border: solid 1px #dcdcdc;
+    background-color: #fff;
+}

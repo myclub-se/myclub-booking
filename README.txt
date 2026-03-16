@@ -4,7 +4,7 @@ Donate link: https://www.myclub.se
 Tags: groups, members, administration
 Requires at least: 6.4
 Tested up to: 6.9
-Stable tag: 0.9.0
+Stable tag: 0.9.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -62,5 +62,8 @@ The plugin transmits name and email address of the person who is booking an item
 == Frequently Asked Questions ==
 
 == Changelog ==
+= 0.9.1 =
+* Removed cache descriptions.
+
 = 0.9.0 =
 * Initial release

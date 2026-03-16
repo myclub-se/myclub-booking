@@ -12,7 +12,7 @@
 		}
 	},
 	"name": "myclub-booking/calendar",
-	"version": "0.9.0",
+	"version": "0.9.1",
 	"title": "MyClub Booking Calendar",
 	"category": "myclub",
 	"icon": "calendar-alt",

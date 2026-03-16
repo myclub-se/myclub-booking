@@ -61,23 +61,6 @@ The plugin transmits name and email address of the person who is booking an item
 
 == Frequently Asked Questions ==
 
-=== Caching ===
-The plugin will try to clear cache on the following cache plugins for MyClub booking:
-* Breeze
-* Cache Enabler
-* Hummingbird performance
-* Hyper Cache
-* LiteSpeed Cache
-* SiteGround Optimizer
-* Swift Performance
-* WP Fastest Cache
-* WP Rocket
-* WP Super Cache
-* W3 Total Cache
-* Redis or Memcache cache
-
-For unsupported cache systems, please contact us to request integration.
-
 == Changelog ==
 = 0.9.0 =
 * Initial release

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MyClub Booking 0.9.0\n"
+"Project-Id-Version: MyClub Booking 0.9.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/myclub-booking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-16T14:04:12+00:00\n"
+"POT-Creation-Date: 2026-03-28T10:00:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: myclub-booking\n"
@@ -89,6 +89,8 @@ msgstr ""
 
 #: blocks/build/calendar/render.php:33
 #: blocks/src/calendar/render.php:33
+#: blocks/build/calendar/index.js:3
+#: blocks/src/calendar/edit.js:143
 msgid "Selected"
 msgstr ""
 
@@ -122,6 +124,11 @@ msgstr ""
 
 #: src/Services/Admin.php:119
 msgid "Invalid API key entered"
+msgstr ""
+
+#: src/Services/Api.php:147
+#: src/Services/Api.php:173
+msgid "Invalid nonce."
 msgstr ""
 
 #: src/Services/Blocks.php:56
@@ -195,7 +202,7 @@ msgstr ""
 #. translators: %d: number of selected booking slots
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:123
+#: blocks/src/shared/calendar-functions.js:124
 #, js-format
 msgid "Book %d slot"
 msgid_plural "Book %d slots"
@@ -204,49 +211,49 @@ msgstr[1] ""
 
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:135
+#: blocks/src/shared/calendar-functions.js:136
 msgid "Remove"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:178
+#: blocks/src/shared/calendar-functions.js:179
 msgid "Book selected slots"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:180
+#: blocks/src/shared/calendar-functions.js:181
 msgid "Email address"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:181
+#: blocks/src/shared/calendar-functions.js:182
 msgid "First name"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:182
+#: blocks/src/shared/calendar-functions.js:183
 msgid "Last name"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:183
+#: blocks/src/shared/calendar-functions.js:184
 msgid "Confirm booking"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:216
+#: blocks/src/shared/calendar-functions.js:217
 msgid "Booking successful"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
 #: blocks/build/calendar/view.js:3
-#: blocks/src/shared/calendar-functions.js:223
+#: blocks/src/shared/calendar-functions.js:224
 msgid "Your payment link: "
 msgstr ""
 
@@ -261,17 +268,17 @@ msgid "Location"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
-#: blocks/src/calendar/edit.js:51
+#: blocks/src/calendar/edit.js:74
 msgid "Select a bookable item"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
-#: blocks/src/calendar/edit.js:81
+#: blocks/src/calendar/edit.js:123
 msgid "Content settings"
 msgstr ""
 
 #: blocks/build/calendar/index.js:3
-#: blocks/src/calendar/edit.js:84
+#: blocks/src/calendar/edit.js:126
 msgid "Bookable item"
 msgstr ""
 

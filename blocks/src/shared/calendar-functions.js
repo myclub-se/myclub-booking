@@ -108,9 +108,10 @@ const SELECTED_COLOR = '#2d7a2d';
 const DEFAULT_COLOR = '#395B9E';
 
 export const updateSelectedSlotsPanel = (selectedSlots, calendarRef, modal) => {
-    const panel = document.getElementById('selected-slots-panel');
-    const list = document.getElementById('selected-slots-list');
-    const bookBtn = document.getElementById('book-selected-slots-btn');
+    const doc = calendarRef.el?.ownerDocument || document;
+    const panel = doc.getElementById('selected-slots-panel');
+    const list = doc.getElementById('selected-slots-list');
+    const bookBtn = doc.getElementById('book-selected-slots-btn');
     if (!panel || !list || !bookBtn) return;
 
     if (selectedSlots.length === 0) {

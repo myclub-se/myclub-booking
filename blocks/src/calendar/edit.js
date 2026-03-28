@@ -1,11 +1,11 @@
-import {useEffect, useRef, useState, useMemo} from '@wordpress/element';
+import {useEffect, useRef, useState, useMemo, useCallback} from '@wordpress/element';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import './editor.scss';
 import {__} from "@wordpress/i18n";
 
 import {getMyClubBookables} from "../shared/edit-functions";
-import FullCalendar from "@fullcalendar/react";
+import {Calendar} from "@fullcalendar/core";
 import {getCalendarLocale, getFullCalendarOptions, toggleSlotSelection, loadEvents} from "../shared/calendar-functions";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -20,12 +20,36 @@ const labels = {
 	weekTextLong: __('Week', 'myclub-booking'),
 };
 
+/**
+ * Pre-inject a <style data-fullcalendar> element so that FullCalendar's
+ * ensureElHasStyles() finds it via querySelector instead of trying to
+ * insertBefore the DOCTYPE node in the block-editor iframe.
+ */
+function ensureStyleElement(el) {
+	if (!el || !el.isConnected) return;
+
+	const rootNode = el.getRootNode();
+	if (!rootNode || rootNode.querySelector('style[data-fullcalendar]')) return;
+
+	const styleEl = document.createElement('style');
+	styleEl.setAttribute('data-fullcalendar', '');
+
+	const head = rootNode === document
+		? document.head
+		: (rootNode.head || rootNode.querySelector('head'));
+
+	if (head) {
+		head.appendChild(styleEl);
+	}
+}
+
 export default function Edit( { attributes, setAttributes } ) {
 	const [calendarTitle, setCalendarTitle] = useState('');
 	const [posts, setPosts] = useState([]);
 	const {apiFetch} = wp;
 	const {useSelect} = wp.data;
-	let calendarRef = useRef();
+	let calendarRef = useRef(null);
+	let calendarElRef = useRef();
 	let outerRef = useRef();
 	let modalRef = useRef();
 	const currentLocale = useSelect((select) => {
@@ -38,9 +62,8 @@ export default function Edit( { attributes, setAttributes } ) {
 	const startOfWeek = useSelect((select) => {
 		if (select("core").getSite()) {
 			const startOfWeek = select('core').getSite().start_of_week;
-			if (calendarRef && calendarRef.current) {
-				const api = calendarRef.current.getApi();
-				api.setOption('firstDay', startOfWeek);
+			if (calendarRef.current) {
+				calendarRef.current.setOption('firstDay', startOfWeek);
 			}
 			return startOfWeek;
 		}
@@ -52,20 +75,39 @@ export default function Edit( { attributes, setAttributes } ) {
 		value: ''
 	};
 	const editorSelectedSlots = [];
-	const handleShowEvent = (arg) => {
+	const handleShowEvent = useCallback((arg) => {
 		const modal = modalRef?.current;
-		toggleSlotSelection(arg.event, editorSelectedSlots, calendarRef.current.getApi(), modal);
-	};
+		if (calendarRef.current) {
+			toggleSlotSelection(arg.event, editorSelectedSlots, calendarRef.current, modal);
+		}
+	}, []);
 
-	const options = useMemo(() => getFullCalendarOptions({
-		labels,
-		events: loadEvents(attributes.bookable_id), // Provide events
-		startOfWeek,
-		locale: getCalendarLocale(currentLocale),
-		smallScreen: window.innerWidth < 960,
-		plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
-		showEvent: (arg) => handleShowEvent(arg)
-	}), [startOfWeek, currentLocale]);
+	// Create/destroy the calendar instance
+	useEffect(() => {
+		const el = calendarElRef.current;
+		if (!el) return;
+
+		ensureStyleElement(el);
+
+		const options = getFullCalendarOptions({
+			labels,
+			events: loadEvents(attributes.bookable_id),
+			startOfWeek,
+			locale: getCalendarLocale(currentLocale),
+			smallScreen: window.innerWidth < 960,
+			plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
+			showEvent: (arg) => handleShowEvent(arg)
+		});
+
+		const calendar = new Calendar(el, options);
+		calendar.render();
+		calendarRef.current = calendar;
+
+		return () => {
+			calendar.destroy();
+			calendarRef.current = null;
+		};
+	}, [startOfWeek, currentLocale, attributes.bookable_id]);
 
 	useEffect(() => {
 		apiFetch( { path: '/myclub/v1/options' } ).then(options => {
@@ -93,9 +135,14 @@ export default function Edit( { attributes, setAttributes } ) {
 			</InspectorControls>
 			<div {...useBlockProps()}>
 				<div className="myclub-booking-calendar" ref={ outerRef }>
-					<div class="myclub-booking-calendar-container">
-						<h3 class="myclub-booking-header">{ calendarTitle }</h3>
-						<FullCalendar id='calendar-div' ref={ calendarRef } { ...options } />
+					<div className="myclub-booking-calendar-container">
+						<h3 className="myclub-booking-header">{ calendarTitle }</h3>
+						<div id='calendar-div' ref={ calendarElRef } />
+					</div>
+					<div id="selected-slots-panel" className="myclub-selected-slots-panel">
+						<span className="myclub-panel-label">{__('Selected', 'myclub-booking')}</span>
+						<div id="selected-slots-list" className="myclub-selected-slots-list"></div>
+						<button id="book-selected-slots-btn" className="myclub-book-btn"></button>
 					</div>
 					<div className="calendar-modal" ref={ modalRef }>
 						<div className="modal-content">

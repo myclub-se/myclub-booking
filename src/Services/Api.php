@@ -85,9 +85,7 @@ class Api
                 $this,
                 'bookSlotsBulk'
             ],
-            'permission_callback' => function ( WP_REST_Request $request ) {
-                return wp_verify_nonce( $request->get_header( 'X-WP-Nonce' ), 'wp_rest' ) !== false;
-            },
+            'permission_callback' => '__return_true',
         ]);
 
         register_rest_route('myclub/v1', '/bookables/(?P<id>\w+)/slots/(?P<slot_id>\w+)/book', [
@@ -96,9 +94,7 @@ class Api
                 $this,
                 'bookSlot'
             ],
-            'permission_callback' => function ( WP_REST_Request $request ) {
-                return wp_verify_nonce( $request->get_header( 'X-WP-Nonce' ), 'wp_rest' ) !== false;
-            },
+            'permission_callback' => '__return_true',
             'args' => array(
                 'id' => array(
                     'validate_callback' => function ($param, $request, $key) {
@@ -147,6 +143,10 @@ class Api
 
     public function bookSlot( WP_REST_Request $request): WP_REST_Response
     {
+        if ( wp_verify_nonce( $request->get_header( 'X-WP-Nonce' ), 'wp_rest' ) === false ) {
+            return new WP_REST_Response( [ 'message' => __( 'Invalid nonce.', 'myclub-booking' ) ], 403 );
+        }
+
         $bookable_id = sanitize_text_field( $request['id'] );
         $slot_id = sanitize_text_field( $request['slot_id'] );
         $email = sanitize_email( $request['email'] );
@@ -169,6 +169,10 @@ class Api
 
     public function bookSlotsBulk( WP_REST_Request $request): WP_REST_Response
     {
+        if ( wp_verify_nonce( $request->get_header( 'X-WP-Nonce' ), 'wp_rest' ) === false ) {
+            return new WP_REST_Response( [ 'message' => __( 'Invalid nonce.', 'myclub-booking' ) ], 403 );
+        }
+
         $email = sanitize_email( $request['email'] );
         $first_name = sanitize_text_field( $request['first_name'] );
         $last_name = sanitize_text_field( $request['last_name'] );

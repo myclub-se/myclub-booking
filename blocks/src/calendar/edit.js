@@ -92,7 +92,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		const options = getFullCalendarOptions({
 			labels,
 			events: loadEvents(attributes.bookable_id),
-			startOfWeek,
+			firstDay: startOfWeek,
 			locale: getCalendarLocale(currentLocale),
 			smallScreen: window.innerWidth < 960,
 			plugins: [dayGridPlugin, timeGridPlugin, listPlugin],

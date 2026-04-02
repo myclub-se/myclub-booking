@@ -12,7 +12,7 @@ export const getFullCalendarOptions = ({labels, events, locale, firstDay, smallS
     const rightToolbar = smallScreen ? 'timeGridDay,listMonth' : 'dayGridMonth,timeGridWeek,listMonth';
     const initialView = smallScreen ? 'timeGridDay' : 'timeGridWeek';
 
-    return {
+    const options = {
         allDaySlot: false,
         headerToolbar: {
             left: 'prev,next today',
@@ -27,7 +27,6 @@ export const getFullCalendarOptions = ({labels, events, locale, firstDay, smallS
         weekText: labels.weekText,
         weekTextLong: labels.weekTextLong,
         initialView,
-        plugins,
         eventClick: (arg) => showEvent(arg),
         eventContent: (arg) => {
             const item = arg.event;
@@ -55,6 +54,12 @@ export const getFullCalendarOptions = ({labels, events, locale, firstDay, smallS
             return {domNodes: arrayOfDomNodes};
         },
     };
+
+    if (plugins && plugins.length > 0) {
+        options.plugins = plugins;
+    }
+
+    return options;
 };
 
 export const setupEvents = (slots) => {

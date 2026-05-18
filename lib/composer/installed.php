@@ -3,7 +3,7 @@
         'name' => 'myclub/myclub-booking',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '617be0477d0ebacfc3cbac6c0c58e684b5a4d2a3',
+        'reference' => 'e72ddc84240c76498974ed4033cc337b62208524',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'myclub/common-lib' => array(
-            'pretty_version' => '1.0.1',
-            'version' => '1.0.1.0',
-            'reference' => 'a70478e82688cdf2b493ab4dc66e5c1e2705c72a',
+            'pretty_version' => '1.0.3',
+            'version' => '1.0.3.0',
+            'reference' => '305e4ef73395b6f6354229cc1571ffeb935e35bb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../myclub/common-lib',
             'aliases' => array(),
@@ -22,7 +22,7 @@
         'myclub/myclub-booking' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '617be0477d0ebacfc3cbac6c0c58e684b5a4d2a3',
+            'reference' => 'e72ddc84240c76498974ed4033cc337b62208524',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
